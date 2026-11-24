@@ -96,7 +96,7 @@ return list.map(function(raw,i){var m=manifestOf(raw);return {id:str(m.id||raw.i
 }
 function cats(item){var c=item.resources.filter(function(x){return known.indexOf(x)!==-1;});return c.length?c:['other'];}
 function installable(value){try{var u=new URL(value);return ['https:','http:'].indexOf(u.protocol)!==-1&&!u.username&&!u.password;}catch(e){return false;}}
-function publicUrl(value){try{var u=new URL(value),p=decodeURIComponent(u.pathname).replace(/\/$/,'');return u.protocol==='https:'&&!u.username&&!u.password&&!u.search&&!u.hash&&['/manifest.json','/stremio/v1'].indexOf(p)!==-1&&!/(token|secret|api[-_]?key|auth|credential|private)/i.test(u.hostname+p);}catch(e){return false;}}
+function publicUrl(value){try{var u=new URL(value),p=decodeURIComponent(u.pathname).replace(/\/$/,'');return u.protocol==='https:'&&!u.username&&!u.password&&!u.search&&!u.hash&&(p.endsWith('/manifest.json')||p.endsWith('/stremio/v1'))&&!/(token|secret|api[-_]?key|auth|credential|private)/i.test(u.hostname+p);}catch(e){return false;}}
 function cleanManifest(m){
 var out={},keys=['id','version','name','description','types','idPrefixes'];
 keys.forEach(function(k){if(m&&m[k]!==undefined)out[k]=m[k];});

@@ -7,8 +7,9 @@ const { createServer, createBackup, manifest } = require('../stremio-exporter-ad
 test('manifest advertises a configurable local utility addon', () => {
   assert.equal(manifest.id, 'org.akcizur.stremio-account-exporter');
   assert.equal(manifest.behaviorHints.configurable, true);
-  assert.ok(Array.isArray(manifest.resources));
-  assert.ok(Array.isArray(manifest.types));
+  assert.deepEqual(manifest.resources, ['catalog', 'meta']);
+  assert.deepEqual(manifest.types, ['movie']);
+  assert.equal(manifest.version, '1.0.1');
 });
 
 test('password login exports profile, addon collection and library, then logs out temporary session', async () => {
@@ -86,6 +87,15 @@ test('local HTTP server serves manifest/configure and streams JSON backup respon
   const loadedManifest = await manifestResponse.json();
   assert.equal(manifestResponse.status, 200);
   assert.equal(loadedManifest.behaviorHints.configurable, true);
+  assert.deepEqual(loadedManifest.resources, ['catalog', 'meta']);
+
+  const catalogResponse = await fetch(base + '/catalog/movie/account-exporter.json');
+  assert.equal(catalogResponse.status, 200);
+  assert.equal((await catalogResponse.json()).metas[0].id, 'stremio-account-exporter');
+
+  const metaResponse = await fetch(base + '/meta/movie/stremio-account-exporter.json');
+  assert.equal(metaResponse.status, 200);
+  assert.equal((await metaResponse.json()).meta.id, 'stremio-account-exporter');
 
   const configureResponse = await fetch(base + '/configure');
   assert.equal(configureResponse.status, 200);

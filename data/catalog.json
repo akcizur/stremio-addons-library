@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-24T21:11:27.966Z",
+  "generatedAt": "2026-11-24T21:30:20.671Z",
   "source": "stremio-addons-library",
   "addons": [
     {
@@ -36,6 +36,19 @@
       },
       "flags": {
         "utility": true
+      },
+      "screenshots": [
+        "https://akcizur.github.io/stremio-addons-library/assets/screenshots/account-exporter.svg"
+      ],
+      "platforms": [
+        "stremio",
+        "nuvio",
+        "streamlet"
+      ],
+      "installNotes": {
+        "stremio": "Open the Stremio app using its stremio:// deep link.",
+        "nuvio": "Nuvio supports nuvio:// links for Stremio addon manifests.",
+        "streamlet": "Copy the HTTPS manifest URL and use Sources → Add Stremio addon → From URL."
       }
     }
   ]

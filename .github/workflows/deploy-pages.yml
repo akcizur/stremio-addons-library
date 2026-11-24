@@ -21,9 +21,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate catalog JSON
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run automated tests
+        run: npm test
+
+      - name: Validate JavaScript syntax
         run: |
-          node -e "const fs=require('node:fs'); const x=JSON.parse(fs.readFileSync('data/catalog.json','utf8')); if (!Array.isArray(x) && !Array.isArray(x.addons)) throw new Error('catalog.json must contain addons array');"
+          node --check stremio-exporter-addon.js
+          node --check tools/sanitize-backup.js
+          node --check tools/health-check.js
+          node -e "const fs=require('node:fs'); const html=fs.readFileSync('index.html','utf8'); const js=html.match(/<script>([\\s\\S]*?)<\\/script>/i); if(!js) throw new Error('index.html has no script'); new Function(js[1]); console.log('Gallery JavaScript syntax OK');"
+
+      - name: Validate catalog and manifest consistency
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const catalog = JSON.parse(fs.readFileSync('data/catalog.json', 'utf8'));
+          const manifest = JSON.parse(fs.readFileSync('addons/account-exporter/manifest.json', 'utf8'));
+          const addon = catalog.addons.find(item => item.id === manifest.id);
+          if (!addon) throw new Error('Exporter missing from catalog');
+          if (addon.transportUrl !== 'https://akcizur.github.io/stremio-addons-library/addons/account-exporter/manifest.json') throw new Error('Catalog transportUrl must be public HTTPS manifest');
+          if (JSON.stringify(addon.manifest) !== JSON.stringify(manifest)) throw new Error('Catalog manifest differs from hosted manifest');
+          for (const path of [
+            'addons/account-exporter/configure/index.html',
+            'addons/account-exporter/catalog/movie/account-exporter.json',
+            'addons/account-exporter/meta/movie/stremio-account-exporter.json',
+            'assets/screenshots/account-exporter.svg'
+          ]) if (!fs.existsSync(path)) throw new Error('Missing addon asset: ' + path);
+          const screenshot = addon.screenshots && addon.screenshots[0];
+          if (screenshot !== 'https://akcizur.github.io/stremio-addons-library/assets/screenshots/account-exporter.svg') throw new Error('Screenshot URL is missing or invalid');
+          console.log('Manifest, catalog, configure route, metadata and screenshot are consistent.');
+          NODE
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -36,10 +68,12 @@ jobs:
           cp index.html _site/index.html
           cp data/catalog.json _site/data/catalog.json
           cp -R addons _site/addons
+          cp -R assets _site/assets
           test -s _site/addons/account-exporter/manifest.json
           test -s _site/addons/account-exporter/configure/index.html
           test -s _site/addons/account-exporter/catalog/movie/account-exporter.json
           test -s _site/addons/account-exporter/meta/movie/stremio-account-exporter.json
+          test -s _site/assets/screenshots/account-exporter.svg
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
@@ -49,3 +83,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Validate deployed addon endpoints and CORS
+        run: node tools/health-check.js data/catalog.json

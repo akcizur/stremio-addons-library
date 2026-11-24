@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Configure · Stremio Account Exporter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b0b0c;--panel:#141416;--line:#303036;--text:#f4f4f5;--muted:#a1a1aa}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:30px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% -15%,#24242b,transparent 50%),var(--bg);color:var(--text);font:14px/1.55 "Google Sans",Roboto,Arial,sans-serif}
+main{width:min(680px,100%)}.top{display:flex;align-items:center;gap:11px;margin-bottom:28px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#eeeef0;color:#111;font-size:16px;letter-spacing:0}
+h1{margin:0 0 12px;font-size:clamp(30px,5vw,44px);letter-spacing:-.065em;line-height:1.02}
+p{color:var(--muted);font-size:13px}.panel{margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:17px;background:var(--panel)}
+.warning{padding:12px 14px;border-radius:10px;border:1px solid #65501d;background:#231e11;color:#eadca9;font-size:11px}
+.steps{display:grid;gap:13px;margin:19px 0}.step{display:grid;grid-template-columns:26px 1fr;gap:11px}.num{width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#25252b;color:#fff;font-weight:700;font-size:11px}.step strong{display:block;font-size:12px}.step span{display:block;color:var(--muted);font-size:11px}
+code{display:inline-block;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#0a0a0c;color:#dedee3;font:11px ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+a.btn{display:flex;align-items:center;justify-content:center;min-height:45px;padding:0 15px;border:1px solid #eeeef0;border-radius:10px;background:#eeeef0;color:#111;text-decoration:none;font-size:12px;font-weight:700}
+a.btn.secondary{margin-top:9px;border-color:var(--line);background:transparent;color:var(--text)}
+.small{font-size:10px!important;color:#777780!important}.foot{margin-top:18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;color:#696972;font-size:10px}
+</style>
+</head>
+<body><main>
+<div class="top"><span class="mark">S</span> Stremio utilities / configure addon</div>
+<h1>Your account.<br>Your backup.</h1>
+<p>This public Configure page contains no login form and does not collect account credentials. Run the exporter on the same computer as your Stremio app, then open its private local interface.</p>
+<section class="panel">
+<div class="warning"><strong>Privacy:</strong> The backup may contain watch history and private addon configuration URLs (including service tokens). Keep the downloaded JSON private. Do not upload it to this public repository.</div>
+<div class="steps">
+<div class="step"><span class="num">1</span><div><strong>Start the local exporter</strong><span>Download this repository, open its folder in a terminal and run:</span><p><code>node stremio-exporter-addon.js</code></p></div></div>
+<div class="step"><span class="num">2</span><div><strong>Open the local interface</strong><span>The account form and export run on your own device, not on GitHub Pages.</span></div></div>
+<div class="step"><span class="num">3</span><div><strong>Download your JSON backup</strong><span>Sign in with Stremio or provide an existing AuthKey. The existing key is not logged out.</span></div></div>
+</div>
+<a class="btn" href="http://127.0.0.1:7000/configure">Open local exporter ↗</a>
+<a class="btn secondary" href="https://github.com/akcizur/stremio-addons-library/blob/main/stremio-exporter-addon.js">View exporter source</a>
+<p class="small">The local service must already be running on this device at 127.0.0.1:7000. This public page never receives your password or AuthKey.</p>
+</section>
+<div class="foot"><span>PUBLIC MANIFEST · GITHUB PAGES</span><span>GOOGLE SANS · LOCAL-FIRST</span></div>
+</main></body></html>

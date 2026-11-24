@@ -138,18 +138,33 @@ for (const record of records) {
   });
 }
 
+const target = path.resolve(outputPath);
+const localEntries = [];
+if (fs.existsSync(target)) {
+  try {
+    const previous = readJson(target);
+    const previousAddons = Array.isArray(previous) ? previous : previous?.addons;
+    if (Array.isArray(previousAddons)) {
+      for (const addon of previousAddons) {
+        if (addon && addon.flags && addon.flags.localOnly === true) localEntries.push(addon);
+      }
+    }
+  } catch {
+    // The new output is still generated from the validated input backup.
+  }
+}
+const combined = output.concat(localEntries);
 const catalog = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
   source: 'stremio-addons-library-sanitizer',
-  addons: output.sort((a, b) => a.name.localeCompare(b.name, 'cs'))
+  addons: combined.sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id), 'cs'))
 };
-const target = path.resolve(outputPath);
 fs.mkdirSync(path.dirname(target), { recursive: true });
 fs.writeFileSync(target, JSON.stringify(catalog, null, 2) + '\n', { mode: 0o600 });
 
 console.log('Katalog uložen: ' + target);
-console.log('Zařazeno: ' + output.length + '/' + records.length);
+console.log('Zařazeno: ' + output.length + '/' + records.length);\nconsole.log('Zachováno lokálních addonů: ' + localEntries.length);
 console.log('Vynecháno bez ID/URL: ' + skippedMissing);
 console.log('Vynecháno jako neveřejné/nebezpečné: ' + skippedUnsafe);
 console.log('Vynecháno duplicit: ' + skippedDuplicate);

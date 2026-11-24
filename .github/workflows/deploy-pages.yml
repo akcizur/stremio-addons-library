@@ -40,12 +40,13 @@ jobs:
         run: |
           node - <<'NODE'
           const fs = require('node:fs');
+          const assert = require('node:assert/strict');
           const catalog = JSON.parse(fs.readFileSync('data/catalog.json', 'utf8'));
           const manifest = JSON.parse(fs.readFileSync('addons/account-exporter/manifest.json', 'utf8'));
           const addon = catalog.addons.find(item => item.id === manifest.id);
           if (!addon) throw new Error('Exporter missing from catalog');
           if (addon.transportUrl !== 'https://akcizur.github.io/stremio-addons-library/addons/account-exporter/manifest.json') throw new Error('Catalog transportUrl must be public HTTPS manifest');
-          if (JSON.stringify(addon.manifest) !== JSON.stringify(manifest)) throw new Error('Catalog manifest differs from hosted manifest');
+          assert.deepStrictEqual(addon.manifest, manifest, 'Catalog manifest differs from hosted manifest');
           for (const path of [
             'addons/account-exporter/configure/index.html',
             'addons/account-exporter/catalog/movie/account-exporter.json',

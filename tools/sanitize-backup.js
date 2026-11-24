@@ -146,7 +146,7 @@ if (fs.existsSync(target)) {
     const previousAddons = Array.isArray(previous) ? previous : previous?.addons;
     if (Array.isArray(previousAddons)) {
       for (const addon of previousAddons) {
-        if (addon && addon.flags && addon.flags.localOnly === true) localEntries.push(addon);
+        if (addon && addon.flags && (addon.flags.localOnly === true || addon.flags.utility === true)) localEntries.push(addon);
       }
     }
   } catch {

@@ -17,7 +17,7 @@ function safeUrl(value) {
     const url = new URL(value);
     const pathname = decodeURIComponent(url.pathname).replace(/\/$/, '');
     return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash
-      && ['/manifest.json', '/stremio/v1'].includes(pathname)
+      && (pathname.endsWith('/manifest.json') || pathname.endsWith('/stremio/v1'))
       && !/(token|secret|api[-_]?key|auth|credential|private)/i.test(url.hostname + pathname);
   } catch {
     return false;

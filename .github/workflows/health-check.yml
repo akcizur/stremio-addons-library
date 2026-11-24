@@ -9,6 +9,7 @@ on:
       - 'data/catalog.json'
       - 'tools/**'
       - 'tests/**'
+      - 'stremio-exporter-addon.js'
       - 'package.json'
       - '.github/workflows/health-check.yml'
 

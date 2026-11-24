@@ -1,29 +1,41 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-24T21:02:18.250Z",
+  "generatedAt": "2026-11-24T21:11:27.966Z",
   "source": "stremio-addons-library",
   "addons": [
     {
       "id": "org.akcizur.stremio-account-exporter",
       "name": "Stremio Account Exporter",
-      "description": "Local-only account backup utility. Exports profile, installed addon descriptors and library to a private JSON file.",
-      "transportUrl": "http://127.0.0.1:7000/manifest.json",
+      "description": "Publicly hosted Stremio utility addon. Configure opens the local account exporter on the same computer.",
+      "transportUrl": "https://akcizur.github.io/stremio-addons-library/addons/account-exporter/manifest.json",
       "transportName": "http",
       "manifest": {
         "id": "org.akcizur.stremio-account-exporter",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "name": "Stremio Account Exporter",
         "description": "Lokální export profilu, nainstalovaných doplňků a knihovny Stremio.",
-        "resources": [],
-        "types": [],
-        "catalogs": [],
+        "resources": [
+          "catalog",
+          "meta"
+        ],
+        "types": [
+          "movie"
+        ],
+        "catalogs": [
+          {
+            "type": "movie",
+            "id": "account-exporter",
+            "name": "Account Exporter",
+            "extra": []
+          }
+        ],
         "behaviorHints": {
           "configurable": true,
           "configurationRequired": false
         }
       },
       "flags": {
-        "localOnly": true
+        "utility": true
       }
     }
   ]

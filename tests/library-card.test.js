@@ -39,6 +39,8 @@ test('catalog item resolves to a matching metadata endpoint', () => {
 test('card has screenshot preview and platform-specific installation actions', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   assert.match(html, /card-preview/);
+  assert.match(html, /class="app-rail"/);
+  assert.match(html, /\.\/addons\/account-exporter\/configure\//);
   assert.match(html, /screenshots/);
   assert.match(html, /platformLink\(url,'stremio'\)/);
   assert.match(html, /platformLink\(url,'nuvio'\)/);
@@ -47,6 +49,11 @@ test('card has screenshot preview and platform-specific installation actions', (
   assert.doesNotMatch(html, /streamlet:\/\//);
   assert.ok(addon.screenshots.some(x => x.endsWith('/assets/screenshots/account-exporter.svg')));
   assert.ok(fs.existsSync(path.join(root, 'assets/screenshots/account-exporter.svg')));
+  const app = fs.readFileSync(path.join(root, 'addons/account-exporter/configure/index.html'), 'utf8');
+  assert.match(app, /class="app-rail"/);
+  assert.match(app, /id="export"/);
+  assert.match(app, /id="privacy"/);
+  assert.match(app, /http:\/\/127\.0\.0\.1:7000\/configure/);
 });
 
 test('deployment includes addon endpoints and screenshot asset', () => {

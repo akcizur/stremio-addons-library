@@ -9,6 +9,7 @@
   "scripts": {
     "sanitize": "node tools/sanitize-backup.js",
     "health": "node tools/health-check.js data/catalog.json",
-    "test": "node --test"
+    "test": "node --test",
+    "addon": "node stremio-exporter-addon.js"
   }
 }

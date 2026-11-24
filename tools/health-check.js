@@ -33,8 +33,14 @@ function validManifest(data) {
 (async () => {
   let failed = 0;
   let checked = 0;
+  let skippedLocal = 0;
   for (const addon of addons) {
     const url = addon?.transportUrl;
+    if (addon?.flags?.localOnly === true) {
+      skippedLocal++;
+      console.log('LOCAL ' + String(addon?.name || addon?.id || 'Lokální doplněk') + ': kontrola přeskočena (běží jen na zařízení uživatele).');
+      continue;
+    }
     const label = String(addon?.name || addon?.id || 'Neznámý doplněk');
     if (!safeUrl(url)) {
       failed++;

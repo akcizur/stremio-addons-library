@@ -1,0 +1,12 @@
+{
+  "metas": [
+    {
+      "id": "stremio-account-exporter",
+      "type": "movie",
+      "name": "Stremio Account Exporter",
+      "description": "A local utility for exporting Stremio account data. Open Configure to access the private exporter.",
+      "releaseInfo": "Local utility",
+      "runtime": "Utility"
+    }
+  ]
+}

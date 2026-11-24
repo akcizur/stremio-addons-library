@@ -100,3 +100,22 @@ test('sanitizer preserves existing local-only addon when regenerating public cat
     fs.rmSync(temp, { recursive: true, force: true });
   }
 });
+
+
+test('sanitizer accepts public manifest under addon subpath', () => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'stremio-library-'));
+  try {
+    const input = path.join(temp, 'backup.json');
+    const output = path.join(temp, 'catalog.json');
+    fs.writeFileSync(input, JSON.stringify([
+      { manifest: { id: 'org.nested', name: 'Nested', version: '1.0.0', types: ['movie'], resources: ['catalog', 'meta'] }, transportUrl: 'https://addons.example/library/account-exporter/manifest.json' }
+    ]));
+    const result = spawnSync(process.execPath, ['tools/sanitize-backup.js', input, output], { cwd: root, encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    const catalog = JSON.parse(fs.readFileSync(output, 'utf8'));
+    assert.equal(catalog.addons.length, 1);
+    assert.equal(catalog.addons[0].transportUrl, 'https://addons.example/library/account-exporter/manifest.json');
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+});

@@ -4,14 +4,6 @@ on:
   schedule:
     - cron: '0 12 * * 0'
   workflow_dispatch:
-  push:
-    paths:
-      - 'data/catalog.json'
-      - 'tools/**'
-      - 'tests/**'
-      - 'stremio-exporter-addon.js'
-      - 'package.json'
-      - '.github/workflows/health-check.yml'
 
 permissions:
   contents: read
@@ -28,8 +20,8 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run sanitizer tests
+      - name: Run automated tests
         run: npm test
 
-      - name: Verify addon manifests
+      - name: Validate deployed manifests and platform endpoints
         run: node tools/health-check.js data/catalog.json

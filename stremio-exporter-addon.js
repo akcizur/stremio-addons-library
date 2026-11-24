@@ -15,7 +15,7 @@ const manifest = {
   id: 'org.akcizur.stremio-account-exporter',
   version: '1.0.1',
   name: 'Stremio Account Exporter',
-  description: 'Lokální export profilu, nainstalovaných doplňků a knihovny Stremio.',
+  description: 'Local-first utility for exporting your Stremio profile, installed addons and library to a private JSON backup.',
   resources: ['catalog', 'meta'],
   types: ['movie'],
   catalogs: [{ type: 'movie', id: 'account-exporter', name: 'Account Exporter', extra: [] }],

@@ -13,7 +13,7 @@ https://akcizur.github.io/stremio-addons-library/addons/account-exporter/manifes
 - **Nuvio:** otevři \`nuvio://akcizur.github.io/stremio-addons-library/addons/account-exporter/manifest.json\`. Alternativně vlož veřejnou HTTPS manifest URL do Settings → Content & Discovery → Addons.
 - **Streamlet:** v aplikaci otevři Sources → Add Stremio addon → From URL a vlož HTTPS manifest URL. Streamlet podle dokumentace přijímá manifest URL nebo \`stremio://\` v poli Module URL; není zde vymyšlený neověřený \`streamlet://\` protokol.
 
-[Veřejná Configure stránka](https://akcizur.github.io/stremio-addons-library/addons/account-exporter/configure/) vysvětluje spuštění lokálního exportéru. [Náhled rozhraní](https://akcizur.github.io/stremio-addons-library/assets/screenshots/account-exporter.svg).
+[Samostatná aplikace Account Exporter](https://akcizur.github.io/stremio-addons-library/addons/account-exporter/configure/) má vlastní levý panel a přehled, exportní a bezpečnostní sekci. V levém panelu hlavní knihovny je pro ni přímá ikona. Akce Configure v kompatibilním klientovi otevře stejnou webovou aplikaci. [Náhled rozhraní](https://akcizur.github.io/stremio-addons-library/assets/screenshots/account-exporter.svg).
 
 ### Co exportuje
 
@@ -35,6 +35,10 @@ node stremio-exporter-addon.js
 Otevři http://127.0.0.1:7000/configure. Přihlas se e-mailem a heslem nebo vlož existující AuthKey. Údaje se nezapisují do souborů, cookies ani Local Storage. Heslo se posílá pouze lokálním procesem přímo na \`https://api.strem.io\`; dočasná relace založená heslem se po exportu zkusí odhlásit. Existující AuthKey exportér neodhlašuje.
 
 Lokální Node.js služba musí běžet na stejném zařízení jako Stremio. Veřejná Configure stránka sama nepřijímá heslo ani AuthKey.
+
+### Navigace a hranice integrace
+
+Hlavní webová knihovna má levý panel s přímou ikonou Account Exporter, která otevře jeho vlastní samostatnou obrazovku. Stejná obrazovka je publikována jako addon Configure URL. Standardní Stremio Addon Protocol ale neposkytuje API pro přidání vlastní root položky do nativního levého menu Stremia; Nuvio addon protocol popisuje katalogy, metadata a Configure akci, nikoliv vlastní root navigační obrazovku. Proto je vlastní levý panel součástí webové aplikace, nikoliv zásah do klientského UI.
 
 ### Veřejné endpointy
 

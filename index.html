@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0c"><meta name="description" content="Stremio Addons Library — katalog doplňků a jejich manifestů.">
+<title>Stremio Addons Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b0b0c;--surface:#121214;--surface2:#19191c;--line:#2b2b30;--text:#f4f4f5;--muted:#a1a1aa;--subtle:#71717a;--max:1160px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:14px/1.55 "Google Sans","Google Sans Text",Roboto,Arial,sans-serif;letter-spacing:-.01em}
+button,input{font:inherit}button{cursor:pointer}a{color:inherit}.shell{width:min(var(--max),calc(100% - 40px));margin:auto}
+.topbar{position:sticky;z-index:20;top:0;border-bottom:1px solid #242428;background:rgb(11 11 12 / 88%);backdrop-filter:blur(18px)}
+.topbar-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-weight:700;letter-spacing:-.035em;font-size:15px;white-space:nowrap}
+.brand-mark{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#eeeef0;color:#111113;font-size:14px;font-weight:700}
+.actions{display:flex;align-items:center;gap:8px}.button{display:inline-flex;justify-content:center;align-items:center;gap:8px;min-height:38px;padding:0 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:background .16s,border-color .16s,transform .16s}
+.button:hover{border-color:#55555d;background:#242428}.button:active{transform:translateY(1px)}.button.primary{background:#ededf0;color:#101012;border-color:#ededf0}.button.primary:hover{background:#fff}.button.small{min-height:32px;padding:0 10px;font-size:11px}
+.hero{padding:62px 0 32px}.eyebrow{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+h1{max-width:720px;margin:12px 0;font-size:clamp(34px,5vw,55px);line-height:1.02;letter-spacing:-.065em;font-weight:700}.hero p{max-width:620px;margin:0;color:var(--muted);font-size:14px}
+.stats{display:flex;flex-wrap:wrap;gap:24px;margin-top:27px}.stat{display:flex;align-items:baseline;gap:7px;color:var(--muted);font-size:11px}.stat strong{color:var(--text);font-size:17px}
+.toolbar{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.toolbar-main{display:flex;gap:10px;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:0}.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--subtle);pointer-events:none}
+.search{width:100%;height:42px;padding:0 14px 0 40px;outline:none;border:1px solid var(--line);border-radius:10px;background:#0d0d0f;color:var(--text)}
+.search:focus{border-color:#777780;box-shadow:0 0 0 3px rgb(255 255 255 / 5%)}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.filter{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-size:11px}
+.filter:hover{color:var(--text);border-color:#55555d}.filter[aria-pressed=true]{color:#111113;background:#e4e4e7;border-color:#e4e4e7;font-weight:700}
+.note{margin:12px 0 0;color:var(--subtle);font-size:10px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:31px 0 14px}
+.section-head h2{margin:0;font-size:17px;letter-spacing:-.04em}.count{color:var(--muted);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding-bottom:50px}
+.card{display:flex;flex-direction:column;min-height:214px;padding:17px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .16s,transform .16s}
+.card:hover{transform:translateY(-2px);border-color:#4b4b52}.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.card-icon{width:38px;height:38px;display:grid;place-items:center;flex:0 0 auto;border-radius:11px;background:#242428;color:#e4e4e7;font-weight:700}
+.status{padding:4px 7px;border:1px solid #303036;border-radius:999px;color:var(--muted);font-size:9px}
+.card h3{margin:14px 0 4px;font-size:14px;font-weight:700}.id{color:var(--subtle);font-size:10px;overflow-wrap:anywhere}
+.desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:37px;margin:9px 0 13px;color:var(--muted);font-size:11px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}.tag{padding:4px 7px;border-radius:6px;background:#202024;color:#c4c4cc;font-size:9px}
+.card-actions{display:flex;gap:7px;margin-top:15px}.card-actions .button{flex:1;min-width:0}
+.empty{grid-column:1/-1;padding:48px 20px;border:1px dashed #3b3b42;border-radius:14px;color:var(--muted);text-align:center}.empty strong{display:block;margin-bottom:5px;color:var(--text);font-size:14px}
+.footer{padding:22px 0 35px;border-top:1px solid #242428;color:var(--subtle);font-size:10px}.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.footer a{color:var(--muted);text-decoration:none}.modal-backdrop{display:none;position:fixed;z-index:60;inset:0;align-items:center;justify-content:center;padding:20px;background:rgb(0 0 0 / 72%);backdrop-filter:blur(8px)}
+.modal-backdrop.open{display:flex}.modal{width:min(720px,100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid #38383f;border-radius:17px;background:#111113}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;padding:19px 20px;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-size:18px}.modal-head p{margin:4px 0 0;color:var(--muted);font-size:10px;overflow-wrap:anywhere}
+.modal-body{overflow:auto;padding:18px 20px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:16px 0}
+.detail-cell{padding:10px;border:1px solid var(--line);border-radius:10px;background:#151518}.detail-cell span{display:block;margin-bottom:4px;color:var(--subtle);font-size:9px;text-transform:uppercase}.detail-cell strong{font-size:11px;overflow-wrap:anywhere}
+pre{max-height:320px;overflow:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#09090a;color:#d4d4d8;font:10px/1.65 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.toast{position:fixed;z-index:80;right:20px;bottom:20px;max-width:min(400px,calc(100% - 40px));padding:11px 14px;border:1px solid #45454d;border-radius:10px;background:#202024;color:var(--text);font-size:11px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:48px}}
+@media(max-width:600px){.shell{width:min(100% - 28px,var(--max))}.topbar-inner{min-height:60px}.brand{font-size:13px}.actions .optional{display:none}.hero{padding:42px 0 25px}.toolbar{padding:12px}.toolbar-main{flex-wrap:wrap}.search-wrap{flex-basis:100%}.toolbar-main>.button{flex:1}.grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}.modal-backdrop{padding:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="shell topbar-inner">
+<a class="brand" href="#top" aria-label="Stremio Addons Library – domů"><span class="brand-mark">S</span><span>STREMIO <span style="color:var(--muted);font-weight:500">/ LIBRARY</span></span></a>
+<div class="actions"><button class="button" id="reloadButton" type="button">↻ <span class="optional">Obnovit</span></button><button class="button primary" id="uploadButton" type="button">＋ <span class="optional">Načíst JSON</span></button><input class="sr-only" id="fileInput" type="file" accept=".json,application/json"></div>
+</div></header>
+<main id="top" class="shell">
+<section class="hero"><div class="eyebrow">Addon index · Stremio ecosystem</div><h1>Všechny doplňky.<br>Jedno přehledné místo.</h1><p>Procházej katalog, hledej podle názvu nebo funkce, prohlížej manifesty a otevírej instalaci přímo ve Stremiu. Vlastní JSON zůstává pouze v tomto prohlížeči.</p>
+<div class="stats" aria-live="polite"><div class="stat"><strong id="totalCount">0</strong> doplňků</div><div class="stat"><strong id="resourceCount">0</strong> typů funkcí</div><div class="stat"><strong id="sourceLabel">Repozitář</strong> zdroj dat</div></div></section>
+<section class="toolbar" aria-label="Vyhledávání a filtry"><div class="toolbar-main">
+<label class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">Vyhledat doplněk</span><input class="search" id="searchInput" type="search" placeholder="Hledat doplněk, ID, funkci…" autocomplete="off"></label>
+<button class="button" id="exportButton" type="button">↓ Export katalogu</button><button class="button" id="resetButton" type="button">Reset</button></div>
+<div class="filters" id="filters" aria-label="Filtrovat podle funkce"><button class="filter" data-filter="all" aria-pressed="true" type="button">Vše</button><button class="filter" data-filter="stream" aria-pressed="false" type="button">Stream</button><button class="filter" data-filter="catalog" aria-pressed="false" type="button">Catalog</button><button class="filter" data-filter="subtitles" aria-pressed="false" type="button">Subtitles</button><button class="filter" data-filter="meta" aria-pressed="false" type="button">Meta</button><button class="filter" data-filter="other" aria-pressed="false" type="button">Ostatní</button></div>
+<p class="note">JSON export se zpracovává lokálně. Před zveřejněním katalogu odstraň osobní URL a konfigurační tokeny.</p></section>
+<div class="section-head"><h2>Katalog doplňků</h2><span class="count" id="resultCount" aria-live="polite">Načítám…</span></div>
+<section class="grid" id="addonGrid" aria-label="Seznam doplňků"><div class="empty"><strong>Načítám katalog</strong>Čtu data/catalog.json…</div></section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><span>STREMIO ADDONS LIBRARY · STATIC GITHUB PAGES GALLERY</span><span><a href="https://github.com/Stremio/stremio-addon-sdk" target="_blank" rel="noopener noreferrer">Stremio Addon SDK</a> · Bez backendu</span></div></footer>
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal">
+<div class="modal-head"><div><h2 id="modalTitle">Detail doplňku</h2><p id="modalSubtitle"></p></div><button class="button small" id="closeModal" type="button" aria-label="Zavřít">×</button></div><div class="modal-body" id="modalBody"></div>
+</div></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+var state={all:[],visible:[],filter:'all',query:'',source:'Repozitář'};
+var known=['stream','catalog','subtitles','meta'],toastTimer;
+function toast(message){var el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show');},3000);}
+function str(v,f){return typeof v==='string'?v:(f||'');}
+function manifestOf(x){return x&&x.manifest&&typeof x.manifest==='object'?x.manifest:x||{};}
+function urlOf(x){return str(x&&(x.transportUrl||x.transportURL||x.manifestUrl||x.manifestURL||x.url));}
+function resources(m){var r=Array.isArray(m.resources)?m.resources:[];return Array.from(new Set(r.map(function(x){return typeof x==='string'?x:x&&x.name;}).filter(function(x){return typeof x==='string';}).map(function(x){return x.toLowerCase();})));}
+function normalise(data){
+var list=[];
+if(Array.isArray(data))list=data;
+else if(data&&Array.isArray(data.addons))list=data.addons;
+else if(data&&Array.isArray(data.installedAddons))list=data.installedAddons;
+else if(data&&Array.isArray(data.items))list=data.items;
+else if(data&&data.data&&Array.isArray(data.data.addons))list=data.data.addons;
+else if(data&&data.data&&Array.isArray(data.data.installedAddons))list=data.data.installedAddons;
+else if(data&&typeof data==='object'&&(data.manifest||data.id||data.name))list=[data];
+return list.map(function(raw,i){var m=manifestOf(raw);return {id:str(m.id||raw.id,'unknown.'+(i+1)),name:str(m.name||raw.name,'Doplněk '+(i+1)),description:str(m.description||raw.description,'Bez popisu.'),transportUrl:urlOf(raw),manifest:m,resources:resources(m),types:Array.isArray(m.types)?m.types.filter(function(v){return typeof v==='string';}):[]};});
+}
+function cats(item){var c=item.resources.filter(function(x){return known.indexOf(x)!==-1;});return c.length?c:['other'];}
+function installable(value){try{var u=new URL(value);return ['https:','http:'].indexOf(u.protocol)!==-1&&!u.username&&!u.password;}catch(e){return false;}}
+function publicUrl(value){try{var u=new URL(value),p=decodeURIComponent(u.pathname).replace(/\/$/,'');return u.protocol==='https:'&&!u.username&&!u.password&&!u.search&&!u.hash&&['/manifest.json','/stremio/v1'].indexOf(p)!==-1&&!/(token|secret|api[-_]?key|auth|credential|private)/i.test(u.hostname+p);}catch(e){return false;}}
+function cleanManifest(m){
+var out={},keys=['id','version','name','description','types','idPrefixes'];
+keys.forEach(function(k){if(m&&m[k]!==undefined)out[k]=m[k];});
+if(m&&Array.isArray(m.resources))out.resources=m.resources.map(function(r){if(typeof r==='string')return r;if(!r||typeof r!=='object')return null;var x={};['name','types','idPrefixes'].forEach(function(k){if(r[k]!==undefined)x[k]=r[k];});return x;}).filter(Boolean);
+if(m&&Array.isArray(m.catalogs))out.catalogs=m.catalogs.map(function(c){if(!c||typeof c!=='object')return null;var x={};['type','id','name','extra','extraSupported','genres'].forEach(function(k){if(c[k]!==undefined)x[k]=c[k];});return x;}).filter(Boolean);
+if(m&&m.behaviorHints&&typeof m.behaviorHints==='object'){var h={};['configurable','configurationRequired','adult','p2p'].forEach(function(k){if(typeof m.behaviorHints[k]==='boolean')h[k]=m.behaviorHints[k];});if(Object.keys(h).length)out.behaviorHints=h;}
+return out;
+}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function render(){
+var q=state.query.trim().toLocaleLowerCase('cs');
+state.visible=state.all.filter(function(x){var t=[x.name,x.id,x.description,x.resources.join(' '),x.types.join(' ')].join(' ').toLocaleLowerCase('cs');return (!q||t.indexOf(q)!==-1)&&(state.filter==='all'||cats(x).indexOf(state.filter)!==-1);});
+$('#totalCount').textContent=state.all.length;$('#resourceCount').textContent=new Set([].concat.apply([],state.all.map(function(x){return x.resources;}))).size;$('#sourceLabel').textContent=state.source;$('#resultCount').textContent=state.visible.length+' z '+state.all.length+' doplňků';
+var grid=$('#addonGrid');
+if(!state.visible.length){grid.innerHTML='<div class="empty"><strong>'+(state.all.length?'Nic jsme nenašli':'Katalog je zatím prázdný')+'</strong>'+(state.all.length?'Zkus změnit hledaný výraz nebo filtr.':'Načti vlastní JSON export nebo vytvoř data/catalog.json.')+'</div>';return;}
+grid.innerHTML=state.visible.map(function(x,i){var tags=(x.resources.length?x.resources:['other']).slice(0,5).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('');var link=installable(x.transportUrl)?'<a class="button primary small" href="'+esc(x.transportUrl.replace(/^https?:/i,'stremio:'))+'">↗ Instalovat</a>':'<button class="button small" disabled>Nelze instalovat</button>';var initial=Array.from(x.name.trim())[0]||'S';return '<article class="card"><div class="card-top"><div class="card-icon">'+esc(initial.toUpperCase())+'</div><span class="status">V katalogu</span></div><h3>'+esc(x.name)+'</h3><div class="id">'+esc(x.id)+'</div><p class="desc">'+esc(x.description)+'</p><div class="tags">'+tags+'</div><div class="card-actions"><button class="button small" type="button" data-detail="'+i+'">Manifest a detail</button>'+link+'</div></article>';}).join('');
+}
+function setData(data,source){state.all=normalise(data);state.source=source;render();toast(state.all.length?'Načteno '+state.all.length+' doplňků.':'V JSON nebyly nalezeny žádné doplňky.');}
+async function loadCatalog(){try{var r=await fetch('./data/catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);setData(await r.json(),'Repozitář');}catch(e){state.all=[];state.source='Bez dat';render();toast('Katalog se nepodařilo načíst: '+e.message);}}
+async function importFile(file){if(!file)return;if(file.size>25*1024*1024){toast('Soubor je příliš velký (limit 25 MB).');return;}try{setData(JSON.parse(await file.text()),'Lokální JSON');var bad=state.all.filter(function(x){return x.transportUrl&&!publicUrl(x.transportUrl);}).length;if(bad)toast('Import lokální. '+bad+' rizikových URL nebude veřejně exportováno.');}catch(e){toast('JSON se nepodařilo načíst: '+e.message);}}
+function exportCatalog(){var safe=state.visible.filter(function(x){return publicUrl(x.transportUrl);});var data={schemaVersion:1,generatedAt:new Date().toISOString(),source:'stremio-addons-library',addons:safe.map(function(x){return {id:x.id,name:x.name,description:x.description,transportUrl:x.transportUrl,manifest:cleanManifest(x.manifest)};})};var blob=new Blob([JSON.stringify(data,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='catalog.json';a.click();URL.revokeObjectURL(a.href);toast('Exportováno '+safe.length+' bezpečných doplňků.');}
+function details(i){var x=state.visible[i];if(!x)return;var json=JSON.stringify(x.manifest,null,2),warning=x.transportUrl&&!publicUrl(x.transportUrl)?'<p class="note">Pozor: URL není vhodná pro veřejné zveřejnění; může obsahovat token nebo konfiguraci.</p>':'';var install=installable(x.transportUrl)?'<a class="button primary" href="'+esc(x.transportUrl.replace(/^https?:/i,'stremio:'))+'">↗ Instalovat ve Stremiu</a>':'';$('#modalTitle').textContent=x.name;$('#modalSubtitle').textContent=x.id;$('#modalBody').innerHTML=warning+'<p>'+esc(x.description)+'</p><div class="detail-grid"><div class="detail-cell"><span>Resources</span><strong>'+esc(x.resources.join(', ')||'Neuvedeno')+'</strong></div><div class="detail-cell"><span>Typy obsahu</span><strong>'+esc(x.types.join(', ')||'Neuvedeno')+'</strong></div><div class="detail-cell"><span>Verze</span><strong>'+esc(x.manifest.version||'Neuvedeno')+'</strong></div><div class="detail-cell"><span>Manifest URL</span><strong>'+esc(x.transportUrl||'Neuvedeno')+'</strong></div></div><div class="card-actions">'+install+'<button class="button" id="copyUrl" type="button">Kopírovat URL</button><button class="button" id="copyJson" type="button">Kopírovat JSON</button></div><h3>Manifest JSON</h3><pre>'+esc(json)+'</pre>';$('#modalBackdrop').classList.add('open');$('#copyUrl').addEventListener('click',function(){copy(x.transportUrl);});$('#copyJson').addEventListener('click',function(){copy(json);});}
+async function copy(value){if(!value){toast('Není co kopírovat.');return;}try{await navigator.clipboard.writeText(value);toast('Zkopírováno.');}catch(e){toast('Schránka není dostupná.');}}
+$('#uploadButton').addEventListener('click',function(){$('#fileInput').click();});$('#fileInput').addEventListener('change',function(e){importFile(e.target.files[0]);e.target.value='';});
+$('#reloadButton').addEventListener('click',loadCatalog);$('#exportButton').addEventListener('click',exportCatalog);
+$('#resetButton').addEventListener('click',function(){$('#searchInput').value='';state.query='';state.filter='all';document.querySelectorAll('.filter').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.filter==='all'));});loadCatalog();});
+$('#searchInput').addEventListener('input',function(e){state.query=e.target.value;render();});
+$('#filters').addEventListener('click',function(e){var b=e.target.closest('[data-filter]');if(!b)return;state.filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});render();});
+$('#addonGrid').addEventListener('click',function(e){var b=e.target.closest('[data-detail]');if(b)details(Number(b.dataset.detail));});
+$('#closeModal').addEventListener('click',function(){$('#modalBackdrop').classList.remove('open');});
+$('#modalBackdrop').addEventListener('click',function(e){if(e.target===$('#modalBackdrop'))$('#modalBackdrop').classList.remove('open');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')$('#modalBackdrop').classList.remove('open');});
+window.addEventListener('dragover',function(e){if(e.dataTransfer&&Array.from(e.dataTransfer.types).indexOf('Files')!==-1)e.preventDefault();});
+window.addEventListener('drop',function(e){if(!e.dataTransfer||!e.dataTransfer.files.length)return;e.preventDefault();importFile(e.dataTransfer.files[0]);});
+loadCatalog();
+})();
+</script>
+</body>
+</html>

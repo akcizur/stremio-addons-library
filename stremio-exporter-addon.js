@@ -13,13 +13,35 @@ const API_METHODS = new Set(['login', 'getUser', 'addonCollectionGet', 'datastor
 
 const manifest = {
   id: 'org.akcizur.stremio-account-exporter',
-  version: '1.0.0',
+  version: '1.0.1',
   name: 'Stremio Account Exporter',
   description: 'Lokální export profilu, nainstalovaných doplňků a knihovny Stremio.',
-  resources: [],
-  types: [],
-  catalogs: [],
+  resources: ['catalog', 'meta'],
+  types: ['movie'],
+  catalogs: [{ type: 'movie', id: 'account-exporter', name: 'Account Exporter', extra: [] }],
   behaviorHints: { configurable: true, configurationRequired: false }
+};
+
+const catalogResponse = {
+  metas: [{
+    id: 'stremio-account-exporter',
+    type: 'movie',
+    name: 'Stremio Account Exporter',
+    description: 'A local utility for exporting Stremio account data. Open Configure to access the private exporter.',
+    releaseInfo: 'Local utility',
+    runtime: 'Utility'
+  }]
+};
+
+const metaResponse = {
+  meta: {
+    id: 'stremio-account-exporter',
+    type: 'movie',
+    name: 'Stremio Account Exporter',
+    description: 'Local-first account backup utility. Configure this addon to launch the exporter on the same computer as Stremio.',
+    releaseInfo: 'Utility',
+    runtime: 'No playback — account export tool'
+  }
 };
 
 function send(res, status, body, contentType) {
@@ -284,6 +306,16 @@ function createServer(options) {
     if (req.method === 'GET' && url.pathname === '/manifest.json') {
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*', 'X-Content-Type-Options': 'nosniff' });
       res.end(JSON.stringify(manifest));
+      return;
+    }
+    if (req.method === 'GET' && url.pathname === '/catalog/movie/account-exporter.json') {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*', 'X-Content-Type-Options': 'nosniff' });
+      res.end(JSON.stringify(catalogResponse));
+      return;
+    }
+    if (req.method === 'GET' && url.pathname === '/meta/movie/stremio-account-exporter.json') {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*', 'X-Content-Type-Options': 'nosniff' });
+      res.end(JSON.stringify(metaResponse));
       return;
     }
     if (req.method === 'GET' && url.pathname === '/healthz') {

@@ -1,0 +1,14 @@
+# Soukromé zálohy a exporty – nikdy necommitovat
+backups/*
+!backups/.gitkeep
+*.backup.json
+stremio-backup-*.json
+private-export*.json
+.env
+.env.*
+!.env.example
+
+# Lokální systémové soubory
+.DS_Store
+Thumbs.db
+node_modules/

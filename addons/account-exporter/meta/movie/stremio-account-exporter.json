@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "id": "stremio-account-exporter",
+    "type": "movie",
+    "name": "Stremio Account Exporter",
+    "description": "Local-first account backup utility. Configure this addon to launch the exporter on the same computer as Stremio.",
+    "releaseInfo": "Utility",
+    "runtime": "No playback — account export tool"
+  }
+}

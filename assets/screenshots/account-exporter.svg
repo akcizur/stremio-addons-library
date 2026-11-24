@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="810" viewBox="0 0 1440 810" role="img" aria-labelledby="title desc">
+<title id="title">Stremio Account Exporter — interface preview</title>
+<desc id="desc">Dark Google Sans account export interface showing secure local login and JSON export steps.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16161b"/><stop offset=".55" stop-color="#0b0b0c"/><stop offset="1" stop-color="#111116"/></linearGradient>
+  <linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1a1a1e"/><stop offset="1" stop-color="#121214"/></linearGradient>
+  <radialGradient id="glow" cx="50%" cy="0%" r="90%"><stop stop-color="#373741" stop-opacity=".7"/><stop offset="1" stop-color="#111116" stop-opacity="0"/></radialGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur stdDeviation="30"/></filter>
+</defs>
+<rect width="1440" height="810" fill="url(#bg)"/>
+<rect width="1440" height="360" fill="url(#glow)"/>
+<ellipse cx="720" cy="690" rx="450" ry="55" fill="#000" opacity=".42" filter="url(#shadow)"/>
+<g font-family="Google Sans,Roboto,Arial,sans-serif">
+  <g transform="translate(118 72)">
+    <rect width="42" height="42" rx="12" fill="#eeeef0"/>
+    <text x="21" y="29" text-anchor="middle" font-size="21" font-weight="700" fill="#111116">S</text>
+    <text x="58" y="17" font-size="13" font-weight="700" letter-spacing="2.2" fill="#a1a1aa">STREMIO UTILITIES</text>
+    <text x="58" y="34" font-size="10" font-weight="500" letter-spacing="1.5" fill="#65656e">ACCOUNT EXPORT</text>
+  </g>
+  <text x="720" y="206" font-size="47" font-weight="700" letter-spacing="-2.7" text-anchor="middle" fill="#f4f4f5">Your account. Your backup.</text>
+  <text x="720" y="244" font-size="17" font-weight="400" text-anchor="middle" fill="#a1a1aa">A private JSON export — processed locally on your device.</text>
+  <g transform="translate(400 294)">
+    <rect width="640" height="420" rx="22" fill="url(#card)" stroke="#35353d" stroke-width="1.5"/>
+    <rect x="26" y="24" width="588" height="62" rx="12" fill="#2a2416" stroke="#6b5424"/>
+    <circle cx="51" cy="55" r="9" fill="#e5c777"/>
+    <text x="72" y="50" font-size="13" font-weight="700" fill="#ead99e">PRIVATE BACKUP</text>
+    <text x="72" y="69" font-size="10" fill="#c4b780">Addon URLs may contain private service tokens. Keep this JSON private.</text>
+    <text x="28" y="125" font-size="12" font-weight="600" fill="#d4d4d8">Stremio account email</text>
+    <rect x="26" y="138" width="588" height="46" rx="9" fill="#0c0c0e" stroke="#393940"/>
+    <text x="43" y="167" font-size="12" fill="#777780">name@example.com</text>
+    <text x="28" y="220" font-size="12" font-weight="600" fill="#d4d4d8">Password</text>
+    <rect x="26" y="233" width="588" height="46" rx="9" fill="#0c0c0e" stroke="#393940"/>
+    <text x="43" y="262" font-size="17" letter-spacing="4" fill="#777780">••••••••••••</text>
+    <g transform="translate(26 302)">
+      <path d="M0 0H588" stroke="#303036"/>
+      <rect x="235" y="-11" width="118" height="21" rx="10" fill="#1a1a1e"/>
+      <text x="294" y="4" text-anchor="middle" font-size="9" letter-spacing="1.4" fill="#777780">OR USE AUTHKEY</text>
+    </g>
+    <rect x="26" y="329" width="588" height="47" rx="10" fill="#eeeef0"/>
+    <text x="320" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#101014">↓  Sign in and download JSON</text>
+    <text x="320" y="400" text-anchor="middle" font-size="10" fill="#777780">LOCAL ONLY · 127.0.0.1 · NO THIRD-PARTY STORAGE</text>
+  </g>
+  <g transform="translate(118 748)">
+    <text x="0" y="0" font-size="10" font-weight="600" letter-spacing="1.7" fill="#62626b">GOOGLE SANS · LOCAL-FIRST · NODE.JS</text>
+    <text x="1204" y="0" text-anchor="end" font-size="10" font-weight="600" letter-spacing="1.7" fill="#62626b">STREMIO ADDONS LIBRARY</text>
+  </g>
+</g>
+</svg>

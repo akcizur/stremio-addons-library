@@ -164,7 +164,8 @@ fs.mkdirSync(path.dirname(target), { recursive: true });
 fs.writeFileSync(target, JSON.stringify(catalog, null, 2) + '\n', { mode: 0o600 });
 
 console.log('Katalog uložen: ' + target);
-console.log('Zařazeno: ' + output.length + '/' + records.length);\nconsole.log('Zachováno lokálních addonů: ' + localEntries.length);
+console.log('Zařazeno: ' + output.length + '/' + records.length);
+console.log('Zachováno lokálních addonů: ' + localEntries.length);
 console.log('Vynecháno bez ID/URL: ' + skippedMissing);
 console.log('Vynecháno jako neveřejné/nebezpečné: ' + skippedUnsafe);
 console.log('Vynecháno duplicit: ' + skippedDuplicate);

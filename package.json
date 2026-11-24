@@ -1,0 +1,14 @@
+{
+  "name": "stremio-addons-library",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static Stremio addon catalog and safe backup sanitizer",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "sanitize": "node tools/sanitize-backup.js",
+    "health": "node tools/health-check.js data/catalog.json",
+    "test": "node --test"
+  }
+}

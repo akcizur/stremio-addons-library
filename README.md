@@ -1,60 +1,66 @@
 # Stremio Addons Library
 
-Statická katalogová galerie Stremio doplňků pro GitHub Pages. Bez frameworku, backendu a build kroku.
+Statická katalogová galerie Stremio doplňků pro GitHub Pages a lokální nástroje pro správu záloh.
 
-## Funkce
-- Načítá veřejný katalog z data/catalog.json.
-- Umožňuje import JSON exportu tlačítkem nebo přetažením souboru. Import zůstává pouze v prohlížeči.
-- Vyhledává podle názvu, ID, popisu a funkcí.
-- Filtruje podle stream, catalog, subtitles a meta.
-- Zobrazuje detail doplňku a jeho manifest.
-- Otevírá instalaci přes protokol stremio://.
-- Exportuje pouze veřejně bezpečné URL.
-- Obsahuje sanitizaci záloh a týdenní kontrolu manifestů přes GitHub Actions.
+## První doplněk: Stremio Account Exporter
 
-## Typografie
-Rozhraní používá Google Sans z Google Fonts API (400, 500, 600, 700). Font se načítá s fallbacky Roboto a Arial; při nedostupnosti Google Fonts zůstane web čitelný.
+Samostatný konfigurovatelný lokální addon v souboru `stremio-exporter-addon.js`. Jeho webové rozhraní běží pouze na `127.0.0.1` a umožňuje vytvořit soukromou JSON zálohu Stremio účtu.
 
-## Struktura
-- index.html — samotná galerie.
-- data/catalog.json — veřejný katalog.
-- backups/ — lokální soukromé zálohy; obsah je ignorován Gitem.
-- tools/sanitize-backup.js — bezpečný převod zálohy na veřejný katalog.
-- tools/health-check.js — kontrola URL manifestů.
-- tools/public-url-overrides.json — ručně ověřené veřejné URL.
-- tests/sanitize-backup.test.js — testy sanitizace.
-- .github/workflows/deploy-pages.yml — nasazení GitHub Pages.
-- .github/workflows/health-check.yml — pravidelná kontrola dostupnosti.
+### Co exportuje
 
-## Lokální použití
-Vyžaduje Node.js 20+.
+- Účetní profil vrácený přes Stremio `getUser`.
+- Nainstalované doplňky včetně celých descriptorů a jejich `transportUrl` (tyto URL mohou obsahovat soukromé konfigurační tokeny).
+- Položky knihovny z kolekce `libraryItem`, pokud je endpoint `datastoreGet` dostupný.
+- Nastavení profilu pouze v rozsahu, v jakém je vrací Stremio API.
 
-    npm test
-    npm run sanitize -- "backups/stremio-backup.json" "data/catalog.json"
-    npm run health
+### Co negarantuje
 
-Sanitizer podporuje pole doplňků i obaly addons, installedAddons, items, data.addons a data.installedAddons.
+Lokální preference přehrávače a titulků nejsou garantovanou součástí cloudového profilu. Exportér je označí jako nedostupné, pokud je API nevrátí. Knihovna používá `datastoreGet`, což je méně zdokumentované rozhraní a může se změnit. Export proto obsahuje stav dostupnosti a varování; nejde o zaručený obraz všech dat aplikace.
 
-Nestandardní veřejné URL lze po ruční kontrole doplnit do tools/public-url-overrides.json podle ID manifestu. Override musí být veřejná HTTPS URL bez query stringu, přihlašovacích údajů a soukromých tokenů.
+### Spuštění
+
+Vyžaduje Node.js 20+; žádné další balíčky nejsou potřeba.
+
+```bash
+node stremio-exporter-addon.js
+```
+
+Otevři [http://127.0.0.1:7000/configure](http://127.0.0.1:7000/configure). Přihlas se e-mailem a heslem nebo vlož existující AuthKey. Údaje se nezapisují do souborů, cookies ani Local Storage. Heslo se posílá pouze z loopback služby přímo na `https://api.strem.io`; dočasná relace založená heslem se po exportu zkusí ukončit. Existující AuthKey exportér neodhlašuje.
+
+Addon manifest: [http://127.0.0.1:7000/manifest.json](http://127.0.0.1:7000/manifest.json). V Stremiu můžeš přidat lokální manifest nebo otevřít jeho Configure stránku. Služba musí běžet na stejném zařízení jako Stremio.
+
+### Bezpečnostní upozornění
+
+Záloha obsahuje citlivá osobní data a může obsahovat soukromé tokeny v URL některých doplňků. Neukládej ji do veřejného repozitáře a neposílej ji nikomu dalšímu. Exportér neposílá data na GitHub ani jiné úložiště; jediným vzdáleným cílem API požadavků je `api.strem.io`.
+
+### API kompatibilita
+
+Oficiální `stremio-api-client` potvrzuje přihlášení a synchronizaci profilu a kolekce doplňků. Čtení `libraryItem` přes `datastoreGet` je převzaté z komunitní API reference, nikoli z garance stabilního veřejného API. Při změně API se tato část může vrátit jako nedostupná.
+
+## Galerie
+
+- `index.html` — statická Google Sans galerie.
+- `data/catalog.json` — katalog doplňků.
+- `tools/sanitize-backup.js` — převod soukromé zálohy na veřejný katalog.
+- `tools/health-check.js` — kontrola URL veřejných manifestů.
+- `tools/public-url-overrides.json` — ručně ověřené veřejné URL.
+- `backups/` — lokální soukromé zálohy ignorované Gitem.
+- `tests/` — automatické testy.
+- `.github/workflows/` — testy, health-check a nasazení Pages.
+
+## Příkazy
+
+```bash
+npm test
+npm run addon
+npm run sanitize -- "backups/stremio-backup.json" "data/catalog.json"
+npm run health
+```
 
 ## GitHub Pages
-1. Otevři Settings → Pages.
-2. V části Build and deployment nastav Source na GitHub Actions.
-3. Workflow Deploy Stremio Addons Library publikuje web při pushi do main.
-4. Adresa webu: https://akcizur.github.io/stremio-addons-library/
 
-Workflow používá oprávnění pages: write a id-token: write deklarovaná přímo v YAML.
+1. V **Settings → Pages** nastav **Source: GitHub Actions**.
+2. Workflow `Deploy Stremio Addons Library` publikuje galerii při pushi do `main`.
+3. Galerie: https://akcizur.github.io/stremio-addons-library/
 
-## Bezpečnost soukromých záloh
-Surová záloha Stremio účtu může obsahovat e-mail, historii sledování a konfigurační URL s API klíči nebo tokeny. Nikdy ji necommituj do veřejného repozitáře.
-
-- Složka backups/ je ignorovaná, kromě prázdného souboru .gitkeep.
-- Sanitizer ponechává pouze známá veřejná pole manifestu.
-- URL s query parametry, autentizací, podezřelým tokenem v cestě nebo nestandardní cestou odmítá.
-- Veřejný export vynechá URL, které nesplní bezpečnostní kontrolu.
-
-## Formát katalogu
-Katalog používá objekt s poli schemaVersion, generatedAt, source a addons. Každý záznam obsahuje id, name, description, transportUrl a očištěný manifest.
-
-## Poznámka k instalaci
-Odkaz stremio:// předává URL manifestu aplikaci Stremio. Funkčnost závisí na instalaci aplikace a povolení externího protokolu v prohlížeči.
+Lokální exporter není hostován na GitHub Pages; záměrně zůstává lokální kvůli práci s přihlašovacími údaji.

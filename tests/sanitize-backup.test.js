@@ -86,7 +86,7 @@ test('sanitizer preserves existing local-only addon when regenerating public cat
         id: 'org.akcizur.stremio-account-exporter',
         name: 'Stremio Account Exporter',
         transportUrl: 'http://127.0.0.1:7000/manifest.json',
-        flags: { localOnly: true },
+        flags: { utility: true },
         manifest: { id: 'org.akcizur.stremio-account-exporter', resources: [], types: [], catalogs: [], behaviorHints: { configurable: true } }
       }]
     }));
@@ -94,7 +94,7 @@ test('sanitizer preserves existing local-only addon when regenerating public cat
     assert.equal(result.status, 0, result.stderr);
     const catalog = JSON.parse(fs.readFileSync(output, 'utf8'));
     assert.equal(catalog.addons.length, 2);
-    assert.ok(catalog.addons.some(x => x.flags && x.flags.localOnly === true));
+    assert.ok(catalog.addons.some(x => x.flags && x.flags.utility === true));
     assert.ok(catalog.addons.some(x => x.id === 'org.public'));
   } finally {
     fs.rmSync(temp, { recursive: true, force: true });

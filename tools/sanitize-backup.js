@@ -41,7 +41,7 @@ function isPublicUrl(value) {
     const url = new URL(value);
     const pathname = decodeURIComponent(url.pathname);
     return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash
-      && ['/manifest.json', '/stremio/v1'].includes(pathname.replace(/\/$/, ''))
+      && (pathname.replace(/\/$/, '').endsWith('/manifest.json') || pathname.replace(/\/$/, '').endsWith('/stremio/v1'))
       && !/(token|secret|api[-_]?key|auth|credential|private)/i.test(url.hostname + pathname);
   } catch {
     return false;

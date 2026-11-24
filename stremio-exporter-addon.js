@@ -18,6 +18,7 @@ const manifest = {
   description: 'Lokální export profilu, nainstalovaných doplňků a knihovny Stremio.',
   resources: [],
   types: [],
+  catalogs: [],
   behaviorHints: { configurable: true, configurationRequired: false }
 };
 

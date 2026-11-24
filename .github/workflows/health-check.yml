@@ -7,7 +7,9 @@ on:
   push:
     paths:
       - 'data/catalog.json'
-      - 'tools/health-check.js'
+      - 'tools/**'
+      - 'tests/**'
+      - 'package.json'
       - '.github/workflows/health-check.yml'
 
 permissions:
@@ -24,6 +26,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Run sanitizer tests
+        run: npm test
 
       - name: Verify addon manifests
         run: node tools/health-check.js data/catalog.json

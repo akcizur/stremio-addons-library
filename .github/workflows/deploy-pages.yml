@@ -36,6 +36,10 @@ jobs:
           cp index.html _site/index.html
           cp data/catalog.json _site/data/catalog.json
           cp -R addons _site/addons
+          test -s _site/addons/account-exporter/manifest.json
+          test -s _site/addons/account-exporter/configure/index.html
+          test -s _site/addons/account-exporter/catalog/movie/account-exporter.json
+          test -s _site/addons/account-exporter/meta/movie/stremio-account-exporter.json
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
